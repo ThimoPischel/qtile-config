@@ -1,0 +1,32 @@
+! top character row -> qwert...p + []
+    keycode  24 = q Q q Q
+    keycode  25 = w W U03ce U03ae
+    keycode  26 = e E U03b5 U0395
+    keycode  27 = r R U03c1 U03a1
+    keycode  28 = t T U03c4 U03a4
+    keycode  29 = y Y U03c8 U03a8
+    keycode  30 = u U U03c5 U03a5
+    keycode  31 = i I U03b8 U0398
+    keycode  32 = o O U03bf U039f
+    keycode  33 = p P U03c0 U03a0
+
+βγδΔ
+! mid character row ->asdf...l + ;''\
+    keycode  38 = a A U03B1 U0391
+    keycode  39 = s S U03c3 U03a3
+    keycode  40 = d D U03b4 U0394
+    keycode  41 = f F U03be U039e
+    keycode  42 = g G U03b3 U0393
+    keycode  43 = h H U03b7 U0397
+    keycode  44 = j J U03b9 U0399
+    keycode  45 = k K U03ba U039a
+    keycode  46 = l L U03bb U039b
+
+! lower character row -> zxcv...m
+    keycode  52 = z Z U03b6 U0396
+    keycode  53 = x X U03c7 U03a7
+    keycode  54 = c C U03b3 U0393
+    keycode  55 = v V U03c6 U03a6
+    keycode  56 = b B U03b2 U0392
+    keycode  57 = n N U03bd U039d
+    keycode  58 = m M U03bc U039c

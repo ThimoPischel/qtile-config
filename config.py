@@ -5,6 +5,7 @@
 # Copyright (c) 2012 Craig Barnes
 # Copyright (c) 2013 horsik
 # Copyright (c) 2013 Tao Sauvage
+# Copyright (c) 2023 Thimo Rene Pischel
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,93 +26,138 @@
 # SOFTWARE.
 
 from libqtile import bar, layout, widget, extension
-from libqtile.config import Click, Drag, Group, Key, Match, Screen
+from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 from libqtile import qtile
-
-
 import subprocess
 
 
+# colors = {
+#     "background": '#282a36',
+#     "highlight": '#44475a',
+#     "focus": '#ffb86c',
+#     "normal": {
+#         "black": '#21222c',
+#         "red": '#ff5555',
+#         "green": '#50fa7b',
+#         "yellow": '#f1fa8c',
+#         "blue": '#bd93f9',
+#         "magenta": '#ff79c6',
+#         "cyan": '#8be9fd',
+#         "white": '#f8f8f2',
+#     },
+#     "bright": {
+#         "black": '#6272a4',
+#         "red": '#ff6e6e',
+#         "green": '#69ff94',
+#         "yellow": '#ffffa5',
+#         "blue": '#d6acff',
+#         "magenta": '#ff92df',
+#         "cyan": '#a4ffff',
+#         "white": '#ffffff',
+#     }
+# }
+
 color = {
-    "background": '#282a36',
-    "highlight": '#44475a',
-    "focus": '#ffb86c',
-    "normal": {
-        "black": '#21222c',
-        "red": '#ff5555',
-        "green": '#50fa7b',
-        "yellow": '#f1fa8c',
-        "blue": '#bd93f9',
-        "magenta": '#ff79c6',
-        "cyan": '#8be9fd',
-        "white": '#f8f8f2',
-    },
-    "bright": {
-        "black": '#6272a4',
-        "red": '#ff6e6e',
-        "green": '#69ff94',
-        "yellow": '#ffffa5',
-        "blue": '#d6acff',
-        "magenta": '#ff92df',
-        "cyan": '#a4ffff',
-        "white": '#ffffff',
-    }
+    "bg1": "#44475a",
+    "bgbs1": "#21222c",
+    "bgb1": "#44475a",
+    "bgb2": "#31323c",
+    "fg1": "#a4ffff",
+    "fgh": '#ff6e6e'
 }
 
-mod = "mod4"
+
+win = "mod4"
+shift = "shift"
+alt_l = "mod1"
+control = "control"
+
+
 terminal = guess_terminal()
 
+def kb_default(q):
+    subprocess.run("xmodmap /home/thimo/.config/qtile/key_mods/default.xmm", shell=True)
+
+def kb_greek(q):
+    subprocess.run("xmodmap /home/thimo/.config/qtile/key_mods/default.xmm && xmodmap /home/thimo/.config/qtile/key_mods/greek.xmm", shell=True)
+
+
+
 keys = [
-    Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
-    Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
-    Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
-    Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
-    Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
-    Key([mod, "shift"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
-    Key([mod, "shift"], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
-    Key([mod, "shift"], "j", lazy.layout.shuffle_down(), desc="Move window down"),
-    Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
-    Key([mod, "control"], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
-    Key([mod, "control"], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
-    Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
-    Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
-    Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
+    Key([win], "h", lazy.layout.left(), desc="Move focus to left"),
+    Key([win], "l", lazy.layout.right(), desc="Move focus to right"),
+    Key([win], "j", lazy.layout.down(), desc="Move focus down"),
+    Key([win], "k", lazy.layout.up(), desc="Move focus up"),
+    Key([win], "space", lazy.layout.next(), desc="Move window focus to other window"),
+    Key([win, shift], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
+    Key([win, shift], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
+    Key([win, shift], "j", lazy.layout.shuffle_down(), desc="Move window down"),
+    Key([win, shift], "k", lazy.layout.shuffle_up(), desc="Move window up"),
+    Key([win, control], "h", lazy.layout.grow_left(), desc="Grow window to the left"),
+    Key([win, control], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
+    Key([win, control], "j", lazy.layout.grow_down(), desc="Grow window down"),
+    Key([win, control], "k", lazy.layout.grow_up(), desc="Grow window up"),
+    Key([win], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
+
     Key(
-        [mod, "shift"],
+        [win, "shift"],
         "Return",
         lazy.layout.toggle_split(),
         desc="Toggle between split and unsplit sides of stack",
     ),
-    Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
-    Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
-    Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
-    Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
-    Key([mod], 'o', lazy.run_extension(extension.DmenuRun(
+    #qtile key that has the modifier win and the key d that triggers the method kb_default äääααα
+    
+
+
+    Key([win], "Return", lazy.spawn(terminal), desc="Launch terminal"),
+    Key([win], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
+    Key([win], "w", lazy.window.kill(), desc="Kill focused window"),
+    Key([win, control], "r", lazy.reload_config(), desc="Reload the config"),
+    Key([win, control], "q", lazy.shutdown(), desc="Shutdown Qtile"),
+    Key([win], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+
+    Key([win], 'o', lazy.run_extension(extension.DmenuRun(
         dmenu_prompt="M",
         dmenu_font="sans",
-        background=color["highlight"],
-        foreground=color["normal"]["cyan"],
-        selected_background=color["highlight"],
-        selected_foreground=color["focus"],
+        background=color['bg1'],
+        foreground=color['fg1'],
+        selected_background=color["bg1"],
+        selected_foreground=color['fgh']
     ))),
-    #apps
-    Key([mod], "b", lazy.spawn("firefox-developer-edition"), desc="Firefox"),
-    Key([mod], "f", lazy.spawn("alacritty -e mc"), desc="FileExplorer"),
-    Key([mod], "c", lazy.spawn("code"), desc="vsCode"),
-    Key([mod], "g", lazy.spawn("firefox-developer-edition mail.google.com"), desc="gmail"),
-]
 
+    Key([win], "f", lazy.spawn("thunar"), desc="FileExplorer"),
+    Key([win], "d", lazy.spawn("thunar Downloads/"), desc="FileExplorer"),
+    Key([win], "c", lazy.spawn("code"), desc="vsCode"),
+    Key([win], "g", lazy.spawn("firefox-developer-edition mail.google.com"), desc="gmail"),
+
+    KeyChord([win], "b", [
+        Key([], "c", lazy.spawn("chromium"), desc="Chromium"),
+        Key([], "g", lazy.spawn("google-chrome-stable"), desc="Google-Chrome"),
+        KeyChord([], "f", [
+            Key([], "s", lazy.spawn("firefox"), lazy.ungrab_chord(), desc="Firefox-stable"),
+            Key([], "d", lazy.spawn("firefox-developer-edition"), lazy.ungrab_chord(), desc="Firefox-devel")
+        ], name="Firefox [s/d]", mode=False),
+        KeyChord([], "e", [
+            Key([], "s", lazy.spawn("microsoft-edge-stable"), lazy.ungrab_chord(), desc="Edge-stable"),
+            Key([], "d", lazy.spawn("microsoft-edge-dev"), lazy.ungrab_chord(), desc="Edge-devel")
+        ], name="Edge [s/d]", mode=False),   
+    ], name="Browser-Selection [c/g/f/e]", mode=False),
+
+    KeyChord([win], "m", [
+        Key([], "d", lazy.function(kb_default)),
+        Key([], "g", lazy.function(kb_greek))
+    ], name="Keyboard-Selection [d/g]", mode=False)
+]
+#
 groups = [Group(i) for i in "123456789"]
 
 layout_theme = {
     "margin": 0,
     "border_width": 2,
-    "border_focus": color["focus"],
-    "border_normal": color["bright"]["cyan"]
+    "border_focus": color["bgbs1"],
+    "border_normal": color["fgh"]
 }
 
 for i in groups:
@@ -119,14 +165,14 @@ for i in groups:
         [
             # mod1 + letter of group = switch to group
             Key(
-                [mod],
+                [win],
                 i.name,
                 lazy.group[i.name].toscreen(),
                 desc="Switch to group {}".format(i.name),
             ),
             # mod1 + shift + letter of group = switch to & move focused window to group
             Key(
-                [mod, "shift"],
+                [win, "shift"],
                 i.name,
                 lazy.window.togroup(i.name, switch_group=True),
                 desc="Switch to & move focused window to group {}".format(i.name),
@@ -170,99 +216,142 @@ screens = [
         top=bar.Bar(
             [
                 widget.Prompt(
-                    background=color["bright"]["red"],
-                    foreground=color["normal"]["black"]
-                    ),
+                    background=color["bg1"],
+                    foreground=color["fg1"]
+                ),
                 widget.CurrentScreen(
-                    background=color["background"],
-                    foreground=color["normal"]["black"]
+                    background=color["bg1"],
+                    foreground=color["fg1"]
+                ),
+                widget.Spacer(
+                    length=2,
+                    background=color["bgbs1"]
                 ),
                 widget.GroupBox(
-                    background=color["bright"]["cyan"],
-                    foreground=color["normal"]["black"],
+                    background=color["bgb1"],
+                    foreground=color["fg1"],
                     rounded=False,
-                    inactive=color["normal"]["white"],
-                    active=color["normal"]["blue"],
+                    inactive=color["bgb1"],
+                    active=color["fg1"],
                     borderwidth=2,
-                    block_highlight_text_color=color["normal"]["black"]
+                    block_highlight_text_color=color["fgh"]
+                ),
+                widget.Spacer(
+                    length=2,
+                    background=color["bgbs1"]
+                ),
+                widget.Chord(
+
                 ),
                 widget.Notify(
-                    background=color["normal"]["red"],
-                    foreground=color["normal"]["black"]
+                    background=color["bgb2"],
+                    foreground=color["fgh"]
                 ),
+
+
                 widget.Spacer(),
+
+
+
+                widget.Spacer(
+                    length=2,
+                    background=color["bgbs1"]
+                ),
                 widget.TextBox(
                     text="Network",
                     mouse_callbacks={'Button1': lazy.spawn("nm-connection-editor")},
-                    background=color["bright"]["blue"],
-                    foreground=color["normal"]["black"]
-                    ),
+                    background=color["bgb1"],
+                    foreground=color["fg1"]
+                ),
                 widget.Net(
                     mouse_callbacks={'Button1': lazy.spawn("nm-connection-editor")},
-                    background=color["bright"]["blue"],
-                    foreground=color["normal"]["black"]
-                    ),
+                    background=color["bgb1"],
+                    foreground=color["fg1"]
+                ),
                 widget.Wlan(
                     interface="wlp4s0",
                     mouse_callbacks={'Button1': lazy.spawn("nm-connection-editor")},
-                    background=color["bright"]["blue"],
-                    foreground=color["normal"]["black"]
-                    ),
+                    background=color["bgb1"],
+                    foreground=color["fg1"]
+                ),
+                widget.Spacer(
+                    length=2,
+                    background=color["bgbs1"]
+                ),
                 widget.CPU(
                     mouse_callbacks={'Button1': open_htop},
-                    background=color["bright"]["green"],
-                    foreground=color["normal"]["black"]
-
-                    ),
+                    background=color["bgb2"],
+                    foreground=color["fg1"]
+                ),
+                widget.Spacer(
+                    length=2,
+                    background=color["bgbs1"]
+                ),
                 widget.TextBox(
                     text="Mem",
                     mouse_callbacks={'Button1': open_htop},
-                    background=color["bright"]["blue"],
-                    foreground=color["normal"]["black"]
-                    ),
+                    background=color["bgb1"],
+                    foreground=color["fg1"]
+                ),
                 widget.Memory(
                     mouse_callbacks={'Button1': open_htop},
-                    background=color["bright"]["blue"],
-                    foreground=color["normal"]["black"]
-                    ),
+                    background=color["bgb1"],
+                    foreground=color["fg1"]
+                ),
+                widget.Spacer(
+                    length=2,
+                    background=color["bgbs1"]
+                ),
                 widget.TextBox(
                     text="Disk",
-                    background=color["bright"]["green"],
-                    foreground=color["normal"]["black"]
-                    ),
+                    background=color["bgb2"],
+                    foreground=color["fg1"]
+                ),
                 widget.DF(
                     visible_on_warn=False,
-                    background=color["bright"]["green"],
-                    foreground=color["normal"]["black"]
-                    ),
+                    background=color["bgb2"],
+                    foreground=color["fg1"]
+                ),
+                widget.Spacer(
+                    length=2,
+                    background=color["bgbs1"]
+                ),
                 widget.TextBox(
                     text="Battery",
-                    background=color["bright"]["blue"],
-                    foreground=color["normal"]["black"]
-                    ),
+                    background=color["bgb1"],
+                    foreground=color["fg1"]
+                ),
                 widget.Battery(
-                    background=color["bright"]["blue"],
-                    foreground=color["normal"]["black"]
+                    background=color["bgb1"],
+                    foreground=color["fg1"]
+                ),
+                widget.Spacer(
+                    length=2,
+                    background=color["bgbs1"]
                 ),
                 widget.TextBox(
                     text="Vol",
-                    background=color["bright"]["green"],
-                    foreground=color["normal"]["black"]
+                    background=color["bgb2"],
+                    foreground=color["fg1"]
                     ),
                 widget.Volume(
-                    background=color["bright"]["green"],
-                    foreground=color["normal"]["black"]
+                    background=color["bgb2"],
+                    foreground=color["fg1"]
+                ),
+                widget.Spacer(
+                    length=2,
+                    background=color["bgbs1"]
                 ),
                 widget.Clock(
                     format="%Y-%m-%d %a %I:%M %p",
-                    background=color["bright"]["blue"],
-                    foreground=color["normal"]["black"]
-                    ),
+                    background=color["bgb1"],
+                    foreground=color["fg1"]
+                ) 
             ],
             24,
-            background=color["background"],
-            border_width=[0, 0, 2, 0],  # Draw top and bottom borders
-            border_color=[color["bright"]["cyan"], color["bright"]["cyan"], color["bright"]["cyan"], color["bright"]["cyan"]],
+            background=color["bg1"],
+            border_width=[0, 0, 1, 0],  # Draw top and bottom borders
+            border_color=[color["bg1"], color["bg1"], color["bgbs1"], color["bg1"]],
         ),
         wallpaper='~/Pictures/wallpaper.png',
         wallpaper_mode='stretch',
@@ -271,9 +360,9 @@ screens = [
 
 # Drag floating layouts.
 mouse = [
-    Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
-    Click([mod], "Button2", lazy.window.bring_to_front()),
+    Drag([win], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
+    Drag([win], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
+    Click([win], "Button2", lazy.window.bring_to_front()),
 ]
 
 dgroups_key_binder = None
