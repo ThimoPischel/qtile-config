@@ -156,8 +156,8 @@ groups = [Group(i) for i in "123456789"]
 layout_theme = {
     "margin": 0,
     "border_width": 2,
-    "border_focus": color["bgbs1"],
-    "border_normal": color["fgh"]
+    "border_focus": color["fgh"],
+    "border_normal": color["bgbs1"]
 }
 
 for i in groups:
