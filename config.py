@@ -155,9 +155,9 @@ groups = [Group(i) for i in "123456789"]
 
 layout_theme = {
     "margin": 0,
-    "border_width": 2,
+    "border_width": 1,
     "border_focus": color["fgh"],
-    "border_normal": color["bgbs1"]
+    "border_normal": color["bg1"]
 }
 
 for i in groups:
@@ -213,7 +213,7 @@ def open_htop():
 
 screens = [
     Screen(
-        top=bar.Bar(
+        bottom=bar.Bar(
             [
                 widget.Prompt(
                     background=color["bg1"],
@@ -350,9 +350,10 @@ screens = [
             ],
             24,
             background=color["bg1"],
-            border_width=[0, 0, 1, 0],  # Draw top and bottom borders
-            border_color=[color["bg1"], color["bg1"], color["bgbs1"], color["bg1"]],
+            border_width=[1, 0, 0, 0],  # Draw top and bottom borders
+            border_color=[color["bgbs1"], color["bgbs1"], color["bgbs1"], color["bgbs1"]],
         ),
+        
         wallpaper='~/Pictures/wallpaper.png',
         wallpaper_mode='stretch',
     ),
