@@ -130,6 +130,10 @@ keys = [
     Key([win], "f", lazy.spawn("thunar"), desc="FileExplorer"),
     Key([win], "d", lazy.spawn("thunar Downloads/"), desc="FileExplorer"),
     Key([win], "c", lazy.spawn("code"), desc="vsCode"),
+    KeyChord([win], "q", [
+        Key([], "c", lazy.spawn("qtcreator"), desc="creator"),
+        Key([], "d", lazy.spawn("qtdesignstudio"), desc="designstudio"),
+    ], name="Qt-Suite [c/d]", mode=False),
     Key([win], "g", lazy.spawn("firefox-developer-edition mail.google.com"), desc="gmail"),
 
     KeyChord([win], "b", [
